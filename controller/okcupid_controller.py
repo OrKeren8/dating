@@ -17,15 +17,10 @@ class OkcupidController(AppController):
         "new_match": '//*[@id="BaseModal"]/div/button'
     }
     
+    def __init__(self, driver) -> None:
+        self.driver = driver
+
     def open_web(self) -> None:
-        options = webdriver.ChromeOptions()  # create options var
-        
-        # run this command below on cmd where chrome.exe is and than run this function (only need to be done once)
-        # chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\selenum\ChromeProfile"
-        options.add_experimental_option("debuggerAddress", f"127.0.0.1:9222")  # make chrome to not close
-        
-        self.driver = webdriver.Chrome(options)  # install required chrome
-        # driver with desired options
         self.driver.get(self.web_base_url)
 
     def swipe_right(self):
@@ -38,6 +33,15 @@ class OkcupidController(AppController):
                 keep_going = self.decide(notification, xpath)
         return keep_going
             
+    def swipe_left(self):
+        keep_going = True
+        try:
+            self.click('//*[@id="quickmatch-aria-tabpanel"]/div/div/div[1]/div[1]/div[2]/div[1]/div/div[1]/button')
+        except selenium.common.exceptions.ElementClickInterceptedException:
+            notification, xpath = self.check_notifications()
+            if notification:
+                keep_going = self.decide(notification, xpath)
+        return keep_going
 
     def check_notifications(self):
         for notification, xpath in self.notifications.items():

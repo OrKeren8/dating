@@ -24,11 +24,11 @@ def main() -> None:
         controller.open_web()
         time.sleep(5)
         while keep_going:
-            # if random.randrange(0, 3,1) > 0:
-            keep_going = controller.swipe_right()
-            # else:
-            #     keep_going = controller.swipe_left()
-        print("finished okcupid likes for today")
+            if random.randrange(0, 3,1) > 0:
+                keep_going = controller.swipe_right()
+            else:
+                keep_going = controller.swipe_left()
+        print("finished bumble likes for today")
 
         idle_time = random.randrange(33000, 36000) # wait 9 to 10 hours
         print(f"idle for {idle_time/3600} hours")

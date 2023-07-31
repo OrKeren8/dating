@@ -14,7 +14,7 @@ class BumbleController(AppController):
 
     notifications = {
         "max_likes": '//*[@id="main"]/div/div[1]/main/div[2]/div/div/span/div/section/div/div[2]/div',
-        "new_match": '//*[@id="main"]/div/div[1]/main/div[2]/article/div/footer/div[2]/div[2]/div'
+        "new_match": '//*[@id="main"]/div/div[1]/main/div[2]/article/div/footer/div[2]/div[2]/div',
     }
     
     def __init__(self, driver) -> None:
@@ -58,9 +58,12 @@ class BumbleController(AppController):
     
     def decide(self, notification, xpath):
         if notification == "max_likes":
+            print("new match")
             return False
         if notification == "new_match":
             self.click(xpath)
             return True
         else:
-            raise Exception
+            print("unknown exception")
+            time.sleep(5)
+            return True

@@ -14,7 +14,8 @@ class OkcupidController(AppController):
 
     notifications = {
         "max_likes": '//*[@id="OkModalContent-main"]/div[1]/button',
-        "new_match": '//*[@id="BaseModal"]/div/button'
+        "new_match": '//*[@id="BaseModal"]/div/button',
+        "super_like": '//*[@id="BaseModal"]/button[2]'
     }
     
     def __init__(self, driver) -> None:
@@ -27,10 +28,9 @@ class OkcupidController(AppController):
         keep_going = True
         try:
             self.click('//*[@id="quickmatch-aria-tabpanel"]/div/div/div[1]/div[1]/div[2]/div[1]/div/div[2]/button')
-        except selenium.common.exceptions.ElementClickInterceptedException:
+        except selenium.common.exceptions.WebDriverException:
             notification, xpath = self.check_notifications()
-            if notification:
-                keep_going = self.decide(notification, xpath)
+            keep_going = self.decide(notification, xpath)
         return keep_going
             
     def swipe_left(self):
@@ -39,8 +39,7 @@ class OkcupidController(AppController):
             self.click('//*[@id="quickmatch-aria-tabpanel"]/div/div/div[1]/div[1]/div[2]/div[1]/div/div[1]/button')
         except selenium.common.exceptions.ElementClickInterceptedException:
             notification, xpath = self.check_notifications()
-            if notification:
-                keep_going = self.decide(notification, xpath)
+            keep_going = self.decide(notification, xpath)
         return keep_going
 
     def check_notifications(self):
@@ -61,7 +60,13 @@ class OkcupidController(AppController):
             self.click(xpath)
             return False
         if notification == "new_match":
+            print("new match")
+            self.click(xpath)
+            return True
+        if notification == "super_like":
             self.click(xpath)
             return True
         else:
-            raise Exception
+            print("unknown exception")
+            time.sleep(5)
+            return True

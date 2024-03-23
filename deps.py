@@ -9,3 +9,6 @@ def get_okcupid_controller() -> AppController:
 def get_bumble_controller() -> AppController:
     bumble_controller = BumbleController(web_driver.get_driver())
     return bumble_controller
+
+def get_web_driver():
+    return web_driver.get_driver()

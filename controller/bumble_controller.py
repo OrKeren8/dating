@@ -53,7 +53,7 @@ class BumbleController(AppController):
         return None, None
     
     def click(self, xpath) -> None:
-        time.sleep(random.random() + random.random() + 1)
+        time.sleep(random.random() + random.random() + 0.2)
         self.driver.find_element(By.XPATH, xpath).click()
     
     def decide(self, notification, xpath):

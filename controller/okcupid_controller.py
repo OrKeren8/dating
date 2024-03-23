@@ -1,9 +1,8 @@
 import time
 import random
-from selenium import webdriver
 import selenium.common
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+import urllib.request
 
 from .app_controller_interface import AppController
 
@@ -52,7 +51,7 @@ class OkcupidController(AppController):
         return None, None
     
     def click(self, xpath) -> None:
-        time.sleep(random.random() + random.random() + 1)
+        time.sleep(random.random() + random.random() + 0.2)
         self.driver.find_element(By.XPATH, xpath).click()
     
     def decide(self, notification, xpath):
@@ -70,3 +69,13 @@ class OkcupidController(AppController):
             print("unknown exception")
             time.sleep(5)
             return True
+        
+    def get_unknown_likes(self):
+        self.driver.get("https://www.okcupid.com/who-likes-you")
+        time.sleep(5)
+        for i in range(1, 9):
+            element = self.driver.find_element(By.XPATH, f'//*[@id="userRows-app"]/div/div[2]/div/a/div/div[2]/div[{i}]/div[1]/div')
+            element = element.get_attribute("style")[23: len(element.get_attribute("style")) - 3]
+            print(element)
+            print(help(urllib.request.urlretrieve))
+            urllib.request.urlretrieve(element, f"./controller/unknown_likes/{random.randrange(1, 10000)}.jpg")
